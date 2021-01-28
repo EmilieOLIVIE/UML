@@ -46,6 +46,29 @@ public class TestRepresentant {
 			"Le salaire mensuel est incorrect"
 		); 
 	}
+	
+	@Test
+	public void testSalaireMensuelPourcentageNegatif() {
+		float CA = 50000f;
+		float POURCENTAGE= -0.1f; // -10% de pourcentage sur CA
+		// On enregistre un CA pour le mois 0 (janvier)
+		r.enregistrerCA(0, CA);		
+		try {
+			r.salaireMensuel(0, POURCENTAGE);
+			fail("Pourcentage négatif"); // Forcer l'échec du test			
+		} catch (IllegalArgumentException e) {}		
+	}
+	
+	@Test
+	public void testSalaireMensuelMoisIncorrect() {
+		float CA = 50000f;
+		float POURCENTAGE= 0.1f; 
+		r.enregistrerCA(0, CA);		
+		try {
+			r.salaireMensuel(15, POURCENTAGE);
+			fail("Pourcentage négatif"); 
+		} catch (IllegalArgumentException e) {}		
+	}
 
 	@Test
 	public void testCAParDefaut() {
@@ -70,7 +93,6 @@ public class TestRepresentant {
 
 	@Test
 	public void testCANegatifImpossible() {
-		
 		try {
 			// On enregistre un CA négatif, que doit-il se passer ?
 			// On s'attend à recevoir une exception
@@ -80,8 +102,16 @@ public class TestRepresentant {
 		} catch (IllegalArgumentException e) {
 			// Si on arrive ici, c'est normal, c'est le comportement attendu
 		}
-
 	}
 	
+	@Test
+	public void testCAMoisIncorrect() {
+		try {
+			r.enregistrerCA(20, 10000f);
+			fail("Mois supérieur à 11"); // Forcer l'échec du test			
+		} catch (IllegalArgumentException e) {}		
+	}
+	
+
 	
 }
